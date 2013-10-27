@@ -40,6 +40,13 @@ Loader.prototype.loadImages = function() {
 
 Loader.prototype.loadScripts = function() {
   var that = this;
+  var files = JSON.parse(JSON.stringify(this.files.scripts));
+
+  var loadNext = function() {
+    if (files.length > 0) {
+      load(files.shift());
+    }
+  };
 
   var load = function(url) {
     var rdy = false;
@@ -51,6 +58,9 @@ Loader.prototype.loadScripts = function() {
         rdy = true;
         
         that.done();
+        
+        loadNext();
+
         scr.parentNode.removeChild(scr);
       }
     };
@@ -58,9 +68,7 @@ Loader.prototype.loadScripts = function() {
     document.getElementsByTagName('head')[0].appendChild(scr);
   };
 
-  for (var n = this.files.scripts.length-1; n >= 0; n--) {
-    load(this.files.scripts[n]);
-  }
+  loadNext();
 };
 
 Loader.prototype.loadStyles = function() {
@@ -131,7 +139,12 @@ Loader.prototype.loadFonts = function() {
 
 Loader.prototype.run = function(callback) {
   this.callback = callback;
-
+  
+  if (this.counter === 0) {
+    callback();
+    return;
+  }
+  
   this.loadImages();
   this.loadScripts();
   this.loadStyles();
@@ -158,7 +171,7 @@ Loader.prototype.addScript = function(url) {
 };
 
 Loader.prototype.addScripts = function(list) {
-  for (var n = list.length-1; n >= 0; n--) {
+  for (var n = 0, m = list.length; n < m; n++) {
     this.addScript(list[n]);
   }
 };

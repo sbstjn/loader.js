@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-<script src="../build/loader.min.js"></script>
+<script src="../src/loader.js"></script>
 <script>
 	var start = (new Date()).getTime();
 	var L = new Loader('#loader');
@@ -14,6 +14,7 @@
 		'http://placekitten.com/400/400']);
 
 	L.addScript('http://ajax.googleapis.com/ajax/libs/ext-core/3.1.0/ext-core.js');
+
 	L.addScripts([
 		'https://raw.github.com/semu/denPen.js/master/js/editor.js',
 		'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js']);
